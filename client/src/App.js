@@ -6,6 +6,8 @@ import {
 import Person from "./pages/Person"; // Lowercase 'person' to match file name, but capitalized 'Person' for component name
 import Add from "./pages/Add";
 import Update from "./pages/Update"; // Uppercase 'Update' to match file name
+import QueryExecutor from './pages/QueryExecutor';
+
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/" element={<Person/>}/> 
         <Route path="/add" element={<Add/>}/>
         <Route path="/update/:id" element={<Update/>}/>
+        <Route path="/query" element={<QueryExecutor />} />
+
       </Routes>
       </BrowserRouter>
     </div>
