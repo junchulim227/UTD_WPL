@@ -64,9 +64,6 @@ app.delete('/person/:Person_ID', (req, res) => {
     });
 });
 
-
-
-
 // this is for update
 app.put('/person/:Person_ID', (req, res) => {
     const personId = req.params.Person_ID;

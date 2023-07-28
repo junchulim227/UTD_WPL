@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import Table  from './Table';
 
 const Person = () => {
   const entity_name = "person";
@@ -17,7 +18,8 @@ const Person = () => {
   useEffect(()=>{
     const fetchAllPersons = async ()=>{ // renamed function
         try{
-            const res = await axios.get("http://localhost:8800/person")
+            const res = await axios.get("http://localhost:8800/person");
+            console.log(res.data);
             setPerson(res.data);
         }catch(err){
             console.log(err)
@@ -42,7 +44,7 @@ const Person = () => {
     <div>
       <h1> Database Hospital Project </h1>
       <div className='person'>
-        {person=>(
+        { person => (
             <div className='person' key={person.Person_ID}>
                 <h2>{person.Name}</h2>
                 <p>{person.Person_ID}</p>
@@ -50,13 +52,15 @@ const Person = () => {
                 <button className='delete' onClick={()=> handleDelete(person.Person_ID)}>Delete</button>
                 <button className='update'><Link to={`/update/${person.Person_ID}`}>Update</Link></button>
             </div>
-        )}
+        ) } 
       </div>
 
         // Add button for 'Add'
       <button>
       <Link to="/add">Add new person</Link>
       </button>
+
+      {/*<Table entity_instance={{this}}></Table>*/ }
 
     </div>
   )
