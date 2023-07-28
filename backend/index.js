@@ -1,16 +1,18 @@
 // This is the Main page of the app
 
 import express from 'express'
-import mysql from 'mysql'
+import mysql from 'mysql2'
 import cors from "cors"
-
+import dotenv from "dotenv"
+dotenv.config()
+console.lo
 const app = express()
 
 const db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"Rkselrksel1!",
-    database:"utd_cs6360"
+    host:process.env.HOST,
+    user:process.env.USERNAME,
+    password:process.env.PASSWORD,
+    database:process.env.DATABASE
 })
 
 app.use(express.json())
@@ -26,7 +28,10 @@ app.get('/', (req,res)=>{
 app.get('/person', (req,res)=>{
     const q = 'SELECT * FROM person'
     db.query(q,(err,data)=>{
-        if(err) return res.json('Error!');
+        if(err) {
+            console.log(err)
+            return res.json('Error!');
+        }
         return res.json(data);
     })
 })
@@ -46,7 +51,11 @@ app.post('/person', (req, res) => {
     ];
 
     db.query(q, values, (err, data) => {
-        if (err) return res.json({ error: err.message });
+        if (err) {
+            console.log(err)
+            return res.json({ error: err.message });
+        }
+        console.log("finised query: ", data);
         return res.json('INSERT IS WORKING!');
     });
 });

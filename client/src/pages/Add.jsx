@@ -31,7 +31,7 @@ const Add = () => {
 
     }
 
-    console.log(person)
+    // console.log(person)
 
   return (
     <div className='form'>
