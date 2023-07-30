@@ -5,7 +5,6 @@ import mysql from "mysql2";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-console.lo;
 const app = express();
 
 //It just crashes for mine..
@@ -85,7 +84,7 @@ app.put("/person/:Person_ID", (req, res) => {
   const personId = req.params.Person_ID;
   const q =
     "UPDATE person SET Person_ID=?, Address=?, Birthdate=?, Name=?, Sex=?, Email_Addr=?, Phone_Number=? WHERE Person_ID=?";
-
+  console.log("received update request")
   const values = [
     req.body.Person_ID,
     req.body.Address,
@@ -98,6 +97,7 @@ app.put("/person/:Person_ID", (req, res) => {
 
   db.query(q, [...values, personId], (err, data) => {
     if (err) return res.json(err);
+    console.log("sending response back")
     return res.json("Person has been updated successfully.");
   });
 });

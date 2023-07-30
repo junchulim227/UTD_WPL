@@ -13,8 +13,15 @@ function AppNavbar() {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/person">Person</Nav.Link>
+            <Nav.Link href="/patient">Patient</Nav.Link>
             <Nav.Link href="/doctor">Doctor</Nav.Link>
-           
+            <Nav.Link href="/appointment">Appointment</Nav.Link>
+            <Nav.Link href="/room">Rooms</Nav.Link>
+            <Nav.Link href="/department">Departments</Nav.Link>
+            <Nav.Link href="/Is_In">Reserve Room</Nav.Link>
+            <Nav.Link href="/disease">Diseases</Nav.Link>
+            <Nav.Link href="/hasDisease">Has Disease</Nav.Link>
+            <Nav.Link href="/interesting">Analytics</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

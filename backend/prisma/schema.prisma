@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  Person_ID    Int         @id @default(autoincrement())
+  Address      String
+  Birth_Date   DateTime
+  Name         String      @db.VarChar(255)
+  Sex          String      @db.VarChar(1)
+  Email_Addr   String      @unique
+  Phone_Number Int
+  Insurance    Insurance[]
+  Staff        Staff[]
+  Patient      Patient[]
+}
+
+model Patient {
+  profile         Person            @relation(fields: [ID], references: [Person_ID], onDelete: Cascade)
+  ID              Int               @id
+  Medicine        Medicine[]
+  Insurance       Insurance[]
+  Has_Appointment Has_Appointment[]
+  Is_In           Is_In[]
+  Has_Disease     Has_Disease[]
+  Test            Test[]
+}
+
+model Medicine {
+  patient  Patient @relation(fields: [ID], references: [ID], onDelete: Cascade)
+  ID       Int     @id
+  Medicine String
+}
+
+model Insurance {
+  patient            Patient @relation(fields: [Member_ID], references: [ID])
+  Member_ID          Int     @id
+  Insurance_Provider String?
+  Group_Number       Int?
+  policy_holder      Person  @relation(fields: [Policy_Holder], references: [Person_ID])
+  Policy_Holder      Int
+}
+
+model Staff {
+  person        Person     @relation(fields: [SSN], references: [Person_ID], onDelete: Cascade)
+  SSN           Int        @id
+  Salary        Int
+  Department_ID Int
+  department    Department @relation(fields: [Department_ID], references: [Department_Number])
+  Doctor        Doctor[]
+}
+
+model Doctor {
+  person          Staff             @relation(fields: [Doctor_SSN], references: [SSN], onDelete: Cascade)
+  Doctor_SSN      Int               @id
+  Has_Appointment Has_Appointment[]
+}
+
+model Department {
+  Department_Number Int     @id @default(autoincrement())
+  Department_Name   String  @unique @db.VarChar(255)
+  Staff             Staff[]
+}
+
+model Has_Appointment {
+  Appointment_ID Int      @id @default(autoincrement())
+  Patient_ID     Int
+  patient        Patient  @relation(fields: [Patient_ID], references: [ID], onDelete: NoAction)
+  Doctor_ID      Int
+  doctor         Doctor   @relation(fields: [Doctor_ID], references: [Doctor_SSN], onDelete: NoAction)
+  DateTime       DateTime
+}
+
+model Disease {
+  Disease_ID   Int           @id @default(autoincrement())
+  Disease_Name String        @unique
+  Has_Disease  Has_Disease[]
+  Test         Test[]
+}
+
+model Has_Disease {
+  Patient_ID Int
+  patient    Patient @relation(fields: [Patient_ID], references: [ID], onDelete: Cascade)
+  Disease_ID Int
+  disease    Disease @relation(fields: [Disease_ID], references: [Disease_ID], onDelete: NoAction)
+
+  @@id([Patient_ID, Disease_ID])
+}
+
+model Test {
+  disease      Disease  @relation(fields: [Disease_ID], references: [Disease_ID], onDelete: NoAction)
+  Disease_ID   Int
+  Patient_ID   Int
+  patient      Patient  @relation(fields: [Patient_ID], references: [ID], onDelete: NoAction)
+  Test_ID      Int      @id @default(autoincrement())
+  Test_Results String   @db.VarChar(255)
+  Test_Name    String   @db.VarChar(255)
+  Date         DateTime
+}
+
+model Room {
+  RoomNumber Int     @id
+  Type       String
+  Beds       Int
+  Is_In      Is_In[]
+}
+
+model Is_In {
+  RoomNumber Int     @id
+  room       Room    @relation(fields: [RoomNumber], references: [RoomNumber], onDelete: Cascade)
+  patient    Patient @relation(fields: [Patient_ID], references: [ID], onDelete: Cascade)
+  Patient_ID Int
+}
